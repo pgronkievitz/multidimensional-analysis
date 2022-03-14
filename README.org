@@ -5,13 +5,17 @@
 
 * Użyte oprogramowanie
 1. ETL --- [[https://kafka.apache.org][Apache Kafka]][fn:kafka]
-2. Klient Kafki --- [[https://github.com/confluentinc/confluent-kafka-python][Confluent]][fn:confluent]
-3. Data warehouse --- [[https://www.cockroachlabs.com/][CockroachDB]][fn:cockroach] (kompatybilny z PostgreSQL)
-4. Zarządzanie usługami --- [[https://ww.wdocker.com][Docker]][fn:docker]
-5. Tworzenie wykresów --- [[https://grafana.com/][Grafana]][fn:grafana]
+   + W celu ładowania danych z Prometheusa użyto odpowiedniego [[https://github.com/Telefonica/prometheus-kafka-adapter][adaptera]][fn:adapter] stworzonego przez firmę Telefónica.
+   + Klient Kafki --- [[https://github.com/confluentinc/confluent-kafka-python][Confluent]][fn:confluent]
+2. Data warehouse --- [[https://www.cockroachlabs.com/][CockroachDB]][fn:cockroach] (kompatybilny z PostgreSQL)
+3. Zarządzanie usługami --- [[https://ww.wdocker.com][Docker]][fn:docker]
+4. Tworzenie wykresów --- [[https://grafana.com/][Grafana]][fn:grafana]
+5. Źródło danych --- [[https://prometheus.io][Prometheus]][fn:prometheus]
 
 [fn:kafka][[https://kafka.apache.org]]
 [fn:confluent]https://github.com/confluentinc/confluent-kafka-python
 [fn:cockroach]https://www.cockroachlabs.com/
 [fn:docker]https://www.docker.com
 [fn:grafana]https://grafana.com/
+[fn:prometheus]https://prometheus.io
+[fn:adapter]https://github.com/Telefonica/prometheus-kafka-adapter
