@@ -19,3 +19,14 @@
 [fn:grafana]https://grafana.com/
 [fn:prometheus]https://prometheus.io
 [fn:adapter]https://github.com/Telefonica/prometheus-kafka-adapter
+* Uruchomienie projektu
+** Instalacja zależności
+** Uruchomienie
+* Implementacja
+** Generowanie danych
+** ETL
+*** Eksport danych z Prometheusa
+*** Transformacje danych w Pythonie
+*** Ładowanie danych do CockroachDB
+** Analiza danych
+*** Machine Learning
