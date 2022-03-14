@@ -1,4 +1,6 @@
 #+TITLE: Wielowymiarowa analiza danych
+ #+author: Patryk Gronkiewicz 164157, Hubert Baran 164141
+ #+language: pl
 
 * Użyte oprogramowanie
 1. ETL --- [[https://kafka.apache.org][Apache Kafka]]
