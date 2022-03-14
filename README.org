@@ -7,8 +7,10 @@
 2. Klient Kafki --- [[https://github.com/confluentinc/confluent-kafka-python][Confluent]][fn:confluent]
 3. Data warehouse --- [[https://www.cockroachlabs.com/][CockroachDB]][fn:cockroach] (kompatybilny z PostgreSQL)
 4. Zarządzanie usługami --- [[https://ww.wdocker.com][Docker]][fn:docker]
+5. Tworzenie wykresów --- [[https://grafana.com/][Grafana]][fn:grafana]
 
 [fn:kafka][[https://kafka.apache.org]]
 [fn:confluent]https://github.com/confluentinc/confluent-kafka-python
 [fn:cockroach]https://www.cockroachlabs.com/
 [fn:docker]https://www.docker.com
+[fn:grafana]https://grafana.com/
