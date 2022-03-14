@@ -21,6 +21,23 @@
 [fn:adapter]https://github.com/Telefonica/prometheus-kafka-adapter
 * Uruchomienie projektu
 ** Instalacja zależności
+Cały projekt można podzielić na trzy kluczowe elementy:
+1. Usługi zewnętrzne;
+2. Transformacje danych w ETL;
+3. Analiza danych przetworzonych.
+
+Pierwszy element jako jedyną zależność posiada Dockera. Dwie następne natomiast opierają się o Pythona w wersji $\geq 3.8$. Całą instrukcję instalacji Dockera można znaleźć pod [[https://docs.docker.com/get-docker/][tym adresem]][fn:docker-installation]. Po zainstalowaniu oraz wejściu do folderu głównego wystarczy uruchomić polecenie
+#+begin_src shell-script :eval never
+docker compose up
+#+end_src
+W przypadku braku podkomendy ~compose~ należy pobrać ~docker-compose~ z repozytorium Pythona przez komendę oraz uruchomić usługi
+#+begin_src shell-script :eval never
+pip install -U docker-compose
+docker-compose up
+#+end_src
+W celu wyłączenia usług należy na klawiaturze wcisnąć =Ctrl= + =C=.
+
+[fn:docker-installation]https://docs.docker.com/get-docker/
 ** Uruchomienie
 * Implementacja
 ** Generowanie danych
