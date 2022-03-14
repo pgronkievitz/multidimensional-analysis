@@ -1,0 +1,6 @@
+#+TITLE: Wielowymiarowa analiza danych
+
+* Użyte oprogramowanie
+1. ETL --- [[https://kafka.apache.org][Apache Kafka]]
+2. Klient Kafki --- [[https://github.com/confluentinc/confluent-kafka-python][Confluent]]
+3. Data warehouse --- [[https://www.cockroachlabs.com/][CockroachDB]] (kompatybilny z PostgreSQL)
