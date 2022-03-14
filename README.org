@@ -38,6 +38,14 @@ docker-compose up
 W celu wyłączenia usług należy na klawiaturze wcisnąć =Ctrl= + =C=.
 
 [fn:docker-installation]https://docs.docker.com/get-docker/
+
+Pozostałe części projektu można przygotować do uruchomienia uruchomienie następujących komend (instrukcje dla Linuxa, dla Windowsa zmienia się jedynie pierwsza komenda).
+#+begin_src shell-script :eval never
+source .venv/bin/activate.sh
+pip install -r requirements.txt
+python FOLDER/main.py
+#+end_src
+Przy czym =FOLDER= należy zastąpić odpowiednią paczką, którą chcemy uruchomić w danym momencie.
 ** Uruchomienie
 * Implementacja
 ** Generowanie danych
