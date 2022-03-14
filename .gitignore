@@ -330,3 +330,6 @@ tags
 data/
 
 .direnv/
+/README.pdf
+/README.tex
+/README.bbl
