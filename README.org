@@ -1,5 +1,6 @@
 #+TITLE: Wielowymiarowa analiza danych
- #+author: Patryk Gronkiewicz 164157, Hubert Baran 164141
+ #+author: Hubert Baran 164141, Patryk Gronkiewicz 164157
+ #+email: 164141@stud.prz.edu, 164157@stud.prz.edu.pl
  #+language: pl
  #+latex_class: report
 
@@ -37,7 +38,7 @@ docker-compose up
 #+end_src
 W celu wyłączenia usług należy na klawiaturze wcisnąć =Ctrl= + =C=.
 
-[fn:docker-installation]https://docs.docker.com/get-docker/
+[fn:docker-installation] https://docs.docker.com/get-docker/
 
 Pozostałe części projektu można przygotować do uruchomienia uruchomienie następujących komend (instrukcje dla Linuxa, dla Windowsa zmienia się jedynie pierwsza komenda).
 #+begin_src shell-script :eval never
