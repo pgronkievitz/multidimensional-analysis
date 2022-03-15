@@ -128,20 +128,32 @@ docker compose up
 W przypadku braku podkomendy ~compose~ należy pobrać ~docker-compose~ z repozytorium Pythona przez komendę oraz uruchomić usługi
 #+begin_src shell-script :eval never
 pip install -U docker-compose
-docker-compose up
 #+end_src
-W celu wyłączenia usług należy na klawiaturze wcisnąć =Ctrl= + =C=.
 
-[fn:docker-installation] https://docs.docker.com/get-docker/
 
 Pozostałe części projektu można przygotować do uruchomienia uruchomienie następujących komend (instrukcje dla Linuxa, dla Windowsa zmienia się jedynie pierwsza komenda).
 #+begin_src shell-script :eval never
 source .venv/bin/activate.sh
 pip install -r requirements.txt
+#+end_src
+
+[fn:docker-installation] https://docs.docker.com/get-docker/
+** Uruchomienie
+W celu uruchomienia projektu należy najpierw uruchomić usługi zewnętrzne. Można to zrobić korzystając z Dockera.
+#+begin_src shell-script :eval never
+docker compose up
+#+end_src
+Jeśli ta komenda nie działa --- należy użyć opcji z myślnikiem
+#+begin_src shell-script :eval never
+docker-compose up
+#+end_src
+Wszystkie usługi można zatrzymać przez kombinację klawiszy =Ctrl= + =C=.
+
+Usługi, które zostały napisane przez nas należy uruchomić bezpośrednio przez Pythona.
+#+begin_src shell-script :eval never
 python FOLDER/main.py
 #+end_src
-Przy czym =FOLDER= należy zastąpić odpowiednią paczką, którą chcemy uruchomić w danym momencie.
-** Uruchomienie
+Gdzie =FOLDER= należy zastąpić odpowiednią nazwą.
 * Implementacja
 ** Generowanie danych
 ** ETL
