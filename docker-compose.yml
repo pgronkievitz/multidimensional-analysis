@@ -46,7 +46,7 @@ services:
 
   roach:
     image: cockroachdb/cockroach:v21.2.6
-    command: start --insecure --join=multidimensional-analysis-roach-1 --listen-addr=localhost
+    command: start-single-node --insecure --listen-addr=0.0.0.0
     volumes:
       - ./data/cockroach:/cockroach/cockroach-data
     ports:
