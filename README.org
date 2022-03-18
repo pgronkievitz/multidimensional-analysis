@@ -6,7 +6,7 @@
 
 * Użyte oprogramowanie
 1. ETL --- [[https://kafka.apache.org][Apache Kafka]][fn:kafka]
-   + W celu ładowania danych z Prometheusa użyto odpowiedniego [[https://github.com/Telefonica/prometheus-kafka-adapter][adaptera]][fn:adapter] stworzonego przez firmę Telefónica.
+
    Apache Kafka to platforma open-source do rozproszonego przetwarzania danych w postaci strumieniowej.
 
    Na początku była rozwijana przez LinkedIn, następnie otrzymała wsparcie od Apache Software Foundation.
@@ -16,16 +16,17 @@
    i odbierającymi je (receiver, consumer). Kafka przetwarza jednostki danych zwane zdarzeniami lub
    wiadomościami (events, messages). Przykładowym zdarzeniem może być np. transakcja finansowa, zmiana
    współrzędnych geograficznych, odczyt sensora w urządzeniu IoT itp. Zdarzenia (events) są przyporządkowane
-   do kategorii zwanych topics. Konsumenci (consumers) mogą otrzymywać dane, gdy zasubskrybują jakiś topic
-   - wówczas otrzymują dane w postaci strumienia (stream).
+   do kategorii zwanych topics. Konsumenci (consumers) mogą otrzymywać dane, gdy zasubskrybują jakiś topic- wówczas otrzymują
+   dane w postaci strumienia (stream).
 
    Do Kafki podłączamy 4 typy elementów:
    + Producers - aplikacje udostępniające strumienie
    + Consumers - aplikacje subskrybujące i odbierające strumienie
-   + Stream Processors - aplikacje pobierające strumienie i produkujące kolejne strumienie (transformujące
-   strumienie)
+   + Stream Processors - aplikacje pobierające strumienie i produkujące kolejne strumienie (transformujące strumienie)
    + Connectors - procesy/aplikacje łączące topiki Kafki z jakimiś aplikacjami, systemami bazodanowymi itp.
    Dla każdego z tych typów mamy osobne API Kafki.
+   
+   W naszym przypadku Producentem jest aplikacja Prometheus, a konsumentem baza danych Cockroach. W celu ładowania danych z Prometheusa użyto odpowiedniego [[https://github.com/Telefonica/prometheus-kafka-adapter][adaptera]][fn:adapter] stworzonego przez firmę Telefónica.
 
 2. Data warehouse --- [[https://www.cockroachlabs.com/][CockroachDB]][fn:cockroach] (kompatybilny z PostgreSQL)
 3. Zarządzanie usługami --- [[https://ww.wdocker.com][Docker]][fn:docker]
