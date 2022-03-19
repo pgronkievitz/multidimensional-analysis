@@ -42,6 +42,34 @@ CockroachDB wspiera protokół wymiany danych bazy PostgreSQL, co oznacza, że j
 tą bazą danych (i narzędziami opartymi o nią).
 
 3. Zarządzanie usługami --- [[https://ww.wdocker.com][Docker]][fn:docker]
+
+Docker to platforma Open Source umożliwiająca tworzenie kontenerów (containers)
+i uruchamianie w nich aplikacji.
+
+Kontenery są formą wirtualizacji. Są to aplikacje, które izolują jakiś kod (program) wraz
+z potrzebnymi mu bibliotekami od reszty środowiska (systemu). W kontenerach jesteśmy w stanie
+uruchamiać aplikacje napisane pod system Linux w systemie Windows.
+
+Kontenery różnią się od maszyn wirtualnych tym, że wykorzystują jądro systemu operacyjnego gospodarza -
+nie instalujemy kolejnego systemu operacyjnego "w całości", jedynie potrzebne komponenty.
+Są więc znacznie lżejsze.
+
+Aby uruchomić kontener w systemie Windows, musimy wpierw podjąć następujące kroki:
++ w panelu Funkcje systemu Windows uruchamiamy funkcje: Platforma funkcji Hypervisor systemu Windows,
+Platforma maszyn wirtualnych, Podsystem Windows dla systemu Linux (może być konieczne ponowne
+uruchomienie komputera)
++ zainstalowanie [[https://docs.microsoft.com/en-us/windows/wsl/install][WSL 2]]
+
+W projekcie wykorzystujemy mechanizm docker compose. Za jego pomocą z użyciem jednego pliku
+instrukcji dla Dockera jesteśmy w stanie automatycznie wygenerować kontenery dla wszystkich
+potrzebnych nam serwisów - Docker sam pobierze obrazy (images) kontenerów z repozytorium,
+a następnie je uruchomi.
+
+Nasz plik z instrukcjami docker compose: docker-compose.yml. Widzimy tam, że tworzymy osobny
+kontener dla każdej z aplikacji: Zookeeper, Kafka, adapter do Kafki, Grafana, CockroachDB.
+W pliku określamy nazwę obrazu kontenera i parametry takie jak woluminy, porty przez które
+możliwa będzie komunikacja.
+
 4. Tworzenie wykresów --- [[https://grafana.com/][Grafana]][fn:grafana]
 5. Źródło danych --- [[https://prometheus.io][Prometheus]][fn:prometheus]
 
