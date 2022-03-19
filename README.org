@@ -29,6 +29,18 @@
    W naszym przypadku Producentem jest aplikacja Prometheus, a konsumentem baza danych Cockroach. W celu ładowania danych z Prometheusa użyto odpowiedniego [[https://github.com/Telefonica/prometheus-kafka-adapter][adaptera]][fn:adapter] stworzonego przez firmę Telefónica.
 
 2. Data warehouse --- [[https://www.cockroachlabs.com/][CockroachDB]][fn:cockroach] (kompatybilny z PostgreSQL)
+
+CockroachDB to rozproszona baza danych, której core jest dostępny za darmo.
+
+Wysokopoziomowo to relacyjna baza danych, wykorzystuje SQL.
+Niskopoziomowo wykorzystuje mechanizm typu klucz-wartość, o wysokim stopniu spójności.
+
+Baza została zaprojektowana do wysokiej i niskokosztowej skalowalności przy zachowaniu dużej
+odporności na awarie.
+
+CockroachDB wspiera protokół wymiany danych bazy PostgreSQL, co oznacza, że jest kompatybilna z
+tą bazą danych (i narzędziami opartymi o nią).
+
 3. Zarządzanie usługami --- [[https://ww.wdocker.com][Docker]][fn:docker]
 4. Tworzenie wykresów --- [[https://grafana.com/][Grafana]][fn:grafana]
 5. Źródło danych --- [[https://prometheus.io][Prometheus]][fn:prometheus]
