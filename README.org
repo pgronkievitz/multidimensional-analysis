@@ -93,6 +93,12 @@ popularnie używanych DBMS - w tym relacyjne, NoSQL, bazy do szeregów czasowych
 
 ** Źródło danych --- [[https://prometheus.io][Prometheus]][fn:prometheus]
 
+Prometheus to open source'owy toolkit do monitoringu i alertowania. Przechowuje szeregi
+czasowe w modelu wielowymiarowym. Zawiera własny język zapytań PromQL.
+
+W naszym projekcie W Prometheuszu przechowujemy surowe dane zebrane w monitoringu serwera,
+które następnie są przekazywane do obróbki.
+
 [fn:kafka][[https://kafka.apache.org]]
 [fn:confluent]https://github.com/confluentinc/confluent-kafka-python
 [fn:cockroach]https://www.cockroachlabs.com/
