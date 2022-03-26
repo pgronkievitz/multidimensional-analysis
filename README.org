@@ -63,12 +63,12 @@ Aby uruchomić kontener w systemie Windows, musimy wpierw podjąć następujące
 systemu Linux. Może być konieczne ponowne uruchomienie komputera.)
 + zainstalowanie [[https://docs.microsoft.com/en-us/windows/wsl/install][WSL 2]]
 
-W projekcie wykorzystujemy mechanizm docker compose. Za jego pomocą z użyciem jednego pliku
+W projekcie wykorzystujemy mechanizm ~docker compose~. Za jego pomocą z użyciem jednego pliku
 instrukcji dla Dockera jesteśmy w stanie automatycznie wygenerować kontenery dla wszystkich
 potrzebnych nam serwisów - Docker sam pobierze obrazy (images) kontenerów z repozytorium,
 a następnie je uruchomi.
 
-Nasz plik z instrukcjami docker compose: docker-compose.yml. Widzimy tam, że tworzymy osobny
+Nasz plik z instrukcjami ~docker compose~: =docker-compose.yml=. Widzimy tam, że tworzymy osobny
 kontener dla każdej z aplikacji: Zookeeper, Kafka, adapter do Kafki, Grafana, CockroachDB.
 W pliku określamy nazwę obrazu kontenera i parametry takie jak woluminy, porty przez które
 możliwa będzie komunikacja.
