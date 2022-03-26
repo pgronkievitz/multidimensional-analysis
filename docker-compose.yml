@@ -41,6 +41,8 @@ services:
     image: grafana/grafana-oss
     volumes:
       - ./data/grafana:/var/lib/grafana
+    ports:
+      - 9095:3000
     networks:
       - mda
 
