@@ -112,6 +112,13 @@ W naszym projekcie W Prometheuszu przechowujemy surowe dane zebrane w monitoring
 które następnie są przekazywane do obróbki.
 
 [fn:prometheus]https://prometheus.io
+** ETL
+ [[https://kafka.apache.org][Apache Kafka]][fn:kafka]
+   + W celu ładowania danych z Prometheusa użyto odpowiedniego [[https://github.com/Telefonica/prometheus-kafka-adapter][adaptera]][fn:adapter] stworzonego przez firmę Telefónica.
+   + Klient Kafki --- [[https://github.com/faust-streaming/faust][Faust]][fn:faust]
+[fn:kafka][[https://kafka.apache.org]]
+[fn:adapter]https://github.com/Telefonica/prometheus-kafka-adapter
+[fn:faust]https://github.com/faust-streaming/faust
 **  Data warehouse
 [[https://www.cockroachlabs.com/][CockroachDB]][fn:cockroach] (kompatybilny z PostgreSQL)
 [fn:cockroach]https://www.cockroachlabs.com/
