@@ -54,7 +54,7 @@ z potrzebnymi mu bibliotekami od reszty środowiska (systemu). W kontenerach jes
 uruchamiać aplikacje napisane pod system Linux w systemie Windows.
 
 Kontenery różnią się od maszyn wirtualnych tym, że wykorzystują jądro systemu operacyjnego gospodarza -
-nie instalujemy kolejnego systemu operacyjnego "w całości", jedynie potrzebne komponenty.
+nie instalujemy kolejnego systemu operacyjnego ,,w całości'', jedynie potrzebne komponenty.
 Są więc znacznie lżejsze.
 
 Aby uruchomić kontener w systemie Windows, musimy wpierw podjąć następujące kroki:
@@ -85,7 +85,7 @@ Umożliwia m. in.:
 + alertowanie
 
 W Grafanie tworzymy dashboardy - raporty w formie pulpitów prezentujące wizualne analizy
-(głównie wizualizacje). Podstawowym "klockiem", z którego budujemy dashboard, jest panel -
+(głównie wizualizacje). Podstawowym ,,klockiem'', z którego budujemy dashboard, jest panel -
 dla każdego panelu tworzymy zapytanie, definiujemy typ wizualizacji itd.
 
 Dostępnych jest wiele typów wizualizacji - np. wykres liniowy, wykres słupkowy,
