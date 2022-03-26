@@ -58,9 +58,10 @@ nie instalujemy kolejnego systemu operacyjnego "w całości", jedynie potrzebne 
 Są więc znacznie lżejsze.
 
 Aby uruchomić kontener w systemie Windows, musimy wpierw podjąć następujące kroki:
-+ w panelu Funkcje systemu Windows uruchamiamy potrzebne funkcje:.
-(Platforma funkcji Hypervisor systemu Windows,Platforma maszyn wirtualnych, Podsystem Windows dla
-systemu Linux. Może być konieczne ponowne uruchomienie komputera.)
++ w panelu Funkcje systemu Windows uruchamiamy potrzebne funkcje: (Może być konieczne ponowne uruchomienie komputera)
+  + Platforma funkcji Hypervisor systemu Windows
+  + Platforma maszyn wirtualnych
+  + Podsystem Windows dla systemu Linux.
 + zainstalowanie [[https://docs.microsoft.com/en-us/windows/wsl/install][WSL 2]]
 
 W projekcie wykorzystujemy mechanizm ~docker compose~. Za jego pomocą z użyciem jednego pliku
