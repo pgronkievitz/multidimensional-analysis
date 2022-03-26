@@ -71,6 +71,26 @@ W pliku określamy nazwę obrazu kontenera i parametry takie jak woluminy, porty
 możliwa będzie komunikacja.
 
 ** Tworzenie wykresów --- [[https://grafana.com/][Grafana]][fn:grafana]
+
+Grafana to system open source przeznaczony do monitorowania i analizy zbiorów danych
+(zwykle dużych, poszerzających się w czasie, często pochodzących z wielu źródeł).
+Jest to aplikacja webowa (korzystamy z niej z użyciem przeglądarki internetowej).
+Umożliwia m. in.:
++ tworzenie zapytań
++ interaktywną wizualizację
++ alertowanie
+
+W Grafanie tworzymy dashboardy - raporty w formie pulpitów prezentujące wizualne analizy
+(głównie wizualizacje). Podstawowym "klockiem", z którego budujemy dashboard, jest panel -
+dla każdego panelu tworzymy zapytanie, definiujemy typ wizualizacji itd.
+
+Dostępnych jest wiele typów wizualizacji - np. wykres liniowy, wykres słupkowy,
+wskaźnik (gauge), mapa cieplna (heatmap) i inne. Można też wyświetlać wyniki obliczeń w
+formie liczb i tekst.
+
+W Grafanie możemy dodawać wiele źródeł danych. Wspieranych jest większość
+popularnie używanych DBMS - w tym relacyjne, NoSQL, bazy do szeregów czasowych.
+
 ** Źródło danych --- [[https://prometheus.io][Prometheus]][fn:prometheus]
 
 [fn:kafka][[https://kafka.apache.org]]
