@@ -5,13 +5,107 @@
  #+latex_class: report
 
 * Użyte oprogramowanie
-1. ETL --- [[https://kafka.apache.org][Apache Kafka]][fn:kafka]
-   + W celu ładowania danych z Prometheusa użyto odpowiedniego [[https://github.com/Telefonica/prometheus-kafka-adapter][adaptera]][fn:adapter] stworzonego przez firmę Telefónica.
-   + Klient Kafki --- [[https://github.com/confluentinc/confluent-kafka-python][Confluent]][fn:confluent]
-2. Data warehouse --- [[https://www.cockroachlabs.com/][CockroachDB]][fn:cockroach] (kompatybilny z PostgreSQL)
-3. Zarządzanie usługami --- [[https://ww.wdocker.com][Docker]][fn:docker]
-4. Tworzenie wykresów --- [[https://grafana.com/][Grafana]][fn:grafana]
-5. Źródło danych --- [[https://prometheus.io][Prometheus]][fn:prometheus]
+** ETL --- [[https://kafka.apache.org][Apache Kafka]][fn:kafka]
+
+   Apache Kafka to platforma open-source do rozproszonego przetwarzania danych w postaci strumieniowej.
+
+   Na początku była rozwijana przez LinkedIn, następnie otrzymała wsparcie od Apache Software Foundation.
+   Napisana jest w językach Scala i Java.
+
+   W uproszczeniu, pełni rolę pośrednika pomiędzy instancjami wysyłającymi dane (sender, producer)
+   i odbierającymi je (receiver, consumer). Kafka przetwarza jednostki danych zwane zdarzeniami lub
+   wiadomościami (events, messages). Przykładowym zdarzeniem może być np. transakcja finansowa, zmiana
+   współrzędnych geograficznych, odczyt sensora w urządzeniu IoT itp. Zdarzenia (events) są przyporządkowane
+   do kategorii zwanych topics. Konsumenci (consumers) mogą otrzymywać dane, gdy zasubskrybują jakiś topic- wówczas otrzymują
+   dane w postaci strumienia (stream).
+
+   Do Kafki podłączamy 4 typy elementów:
+   + Producers - aplikacje udostępniające strumienie
+   + Consumers - aplikacje subskrybujące i odbierające strumienie
+   + Stream Processors - aplikacje pobierające strumienie i produkujące kolejne strumienie (transformujące strumienie)
+   + Connectors - procesy/aplikacje łączące topiki Kafki z jakimiś aplikacjami, systemami bazodanowymi itp.
+   Dla każdego z tych typów mamy osobne API Kafki.
+   
+   W naszym przypadku Producentem jest aplikacja Prometheus, a konsumentem baza danych Cockroach. W celu ładowania danych z Prometheusa użyto odpowiedniego [[https://github.com/Telefonica/prometheus-kafka-adapter][adaptera]][fn:adapter] stworzonego przez firmę Telefónica.
+
+** Data warehouse --- [[https://www.cockroachlabs.com/][CockroachDB]][fn:cockroach]
+
+CockroachDB to rozproszona baza danych, której core jest dostępny za darmo.
+
+Wysokopoziomowo to relacyjna baza danych, wykorzystuje SQL.
+Niskopoziomowo wykorzystuje mechanizm typu klucz-wartość, o wysokim stopniu spójności.
+
+Baza została zaprojektowana do wysokiej i niskokosztowej skalowalności przy zachowaniu dużej
+odporności na awarie.
+
+CockroachDB wspiera protokół wymiany danych bazy PostgreSQL, co oznacza, że jest kompatybilna z
+tą bazą danych (i narzędziami opartymi o nią).
+
+W naszym projekcie baza danych CockroachDB służy jako hurtownia danych. Trafiają tam dane
+po preprocessingu (po przejściu przez różne ETL w Kafce).
+
+** Zarządzanie usługami --- [[https://ww.wdocker.com][Docker]][fn:docker]
+
+Docker to platforma Open Source umożliwiająca tworzenie kontenerów (containers)
+i uruchamianie w nich aplikacji.
+
+Kontenery są formą wirtualizacji. Są to aplikacje, które izolują jakiś kod (program) wraz
+z potrzebnymi mu bibliotekami od reszty środowiska (systemu). W kontenerach jesteśmy w stanie
+uruchamiać aplikacje napisane pod system Linux w systemie Windows.
+
+Kontenery różnią się od maszyn wirtualnych tym, że wykorzystują jądro systemu operacyjnego gospodarza -
+nie instalujemy kolejnego systemu operacyjnego ,,w całości'', jedynie potrzebne komponenty.
+Są więc znacznie lżejsze.
+
+Aby uruchomić kontener w systemie Windows, musimy wpierw podjąć następujące kroki:
++ w panelu Funkcje systemu Windows uruchamiamy potrzebne funkcje: (Może być konieczne ponowne uruchomienie komputera)
+  + Platforma funkcji Hypervisor systemu Windows
+  + Platforma maszyn wirtualnych
+  + Podsystem Windows dla systemu Linux.
++ zainstalowanie [[https://docs.microsoft.com/en-us/windows/wsl/install][WSL 2]]
+
+W projekcie wykorzystujemy mechanizm ~docker compose~. Za jego pomocą z użyciem jednego pliku
+instrukcji dla Dockera jesteśmy w stanie automatycznie wygenerować kontenery dla wszystkich
+potrzebnych nam serwisów - Docker sam pobierze obrazy (images) kontenerów z repozytorium,
+a następnie je uruchomi.
+
+Nasz plik z instrukcjami ~docker compose~: =docker-compose.yml=. Widzimy tam, że tworzymy osobny
+kontener dla każdej z aplikacji: Zookeeper, Kafka, adapter do Kafki, Grafana, CockroachDB.
+W pliku określamy nazwę obrazu kontenera i parametry takie jak woluminy, porty przez które
+możliwa będzie komunikacja.
+
+** Tworzenie wykresów --- [[https://grafana.com/][Grafana]][fn:grafana]
+
+Grafana to system open source przeznaczony do monitorowania i analizy zbiorów danych
+(zwykle dużych, poszerzających się w czasie, często pochodzących z wielu źródeł).
+Jest to aplikacja webowa (korzystamy z niej z użyciem przeglądarki internetowej).
+Umożliwia m. in.:
++ tworzenie zapytań
++ interaktywną wizualizację
++ alertowanie
+
+W Grafanie tworzymy dashboardy - raporty w formie pulpitów prezentujące wizualne analizy
+(głównie wizualizacje). Podstawowym ,,klockiem'', z którego budujemy dashboard, jest panel -
+dla każdego panelu tworzymy zapytanie, definiujemy typ wizualizacji itd.
+
+Dostępnych jest wiele typów wizualizacji - np. wykres liniowy, wykres słupkowy,
+wskaźnik (gauge), mapa cieplna (heatmap) i inne. Można też wyświetlać wyniki obliczeń w
+formie liczb i tekst.
+
+W Grafanie możemy dodawać wiele źródeł danych. Wspieranych jest większość
+popularnie używanych DBMS - w tym relacyjne, NoSQL, bazy do szeregów czasowych.
+
+Grafanę wykorzystujemy jako narzędzie do przeprowadzania docelowych analiz
+danych po transformacjach przygotowujących je do tych analiz. Dane te przechowujemy
+w bazie danych CockroachDB.
+
+** Źródło danych --- [[https://prometheus.io][Prometheus]][fn:prometheus]
+
+Prometheus to open source'owy toolkit do monitoringu i alertowania. Przechowuje szeregi
+czasowe w modelu wielowymiarowym. Zawiera własny język zapytań PromQL.
+
+W naszym projekcie W Prometheuszu przechowujemy surowe dane zebrane w monitoringu serwera,
+które następnie są przekazywane do obróbki.
 
 [fn:kafka][[https://kafka.apache.org]]
 [fn:confluent]https://github.com/confluentinc/confluent-kafka-python
