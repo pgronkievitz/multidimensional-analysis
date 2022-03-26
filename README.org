@@ -41,6 +41,9 @@ odporności na awarie.
 CockroachDB wspiera protokół wymiany danych bazy PostgreSQL, co oznacza, że jest kompatybilna z
 tą bazą danych (i narzędziami opartymi o nią).
 
+W naszym projekcie baza danych CockroachDB służy jako hurtownia danych. Trafiają tam dane
+po preprocessingu (po przejściu przez różne ETL w Kafce).
+
 ** Zarządzanie usługami --- [[https://ww.wdocker.com][Docker]][fn:docker]
 
 Docker to platforma Open Source umożliwiająca tworzenie kontenerów (containers)
@@ -90,6 +93,10 @@ formie liczb i tekst.
 
 W Grafanie możemy dodawać wiele źródeł danych. Wspieranych jest większość
 popularnie używanych DBMS - w tym relacyjne, NoSQL, bazy do szeregów czasowych.
+
+Grafanę wykorzystujemy jako narzędzie do przeprowadzania docelowych analiz
+danych po transformacjach przygotowujących je do tych analiz. Dane te przechowujemy
+w bazie danych CockroachDB.
 
 ** Źródło danych --- [[https://prometheus.io][Prometheus]][fn:prometheus]
 
