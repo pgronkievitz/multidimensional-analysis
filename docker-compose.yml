@@ -41,12 +41,14 @@ services:
     image: grafana/grafana-oss
     volumes:
       - ./data/grafana:/var/lib/grafana
+    ports:
+      - 9095:3000
     networks:
       - mda
 
   roach:
-    image: cockroachdb/cockroach:v21.2.6
-    command: start --insecure --join=multidimensional-analysis-roach-1 --listen-addr=localhost
+    image: cockroachdb/cockroach:v21.2.7
+    command: start-single-node --insecure --listen-addr=0.0.0.0
     volumes:
       - ./data/cockroach:/cockroach/cockroach-data
     ports:
