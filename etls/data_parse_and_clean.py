@@ -27,6 +27,6 @@ async def parse_measurement(measurement: MeasurementRecord):
 async def remove_nones(parsed: ParsedRecord):
     # TODO
     # cleaning nones
-    #   * imputation (e.g. average of neighbors)
-    #   * arbitraty values
+    #   imputation (e.g. average of neighbors)
+    #   OR arbitraty values
     return parsed
