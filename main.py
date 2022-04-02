@@ -1,5 +1,6 @@
 import faust
 from etls.record import MeasurementRecord, ParsedRecord
+from etls.data_parse_and_clean import parse_measurement
 
 app = faust.App("myapp", broker="kafka://localhost:9092")
 
@@ -12,6 +13,5 @@ parsed_topic = app.topic("parsed",
 @app.agent(raw_topic)
 async def data_parsing(measurements):
     async for measurement in measurements:
-        # TODO - data parsing
-        # await parsed_topic.send(value=parsed)
-        pass
+        parsed = await parse_measurement(measurement)
+        await parsed_topic.send(value=parsed)
