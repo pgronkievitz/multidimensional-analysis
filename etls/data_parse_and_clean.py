@@ -1,4 +1,3 @@
-import faust
 from etls.record import MeasurementRecord, ParsedRecord
 from datetime import datetime
 
