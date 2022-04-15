@@ -1,16 +1,17 @@
 import faust
-import datetime
+from datetime import datetime
+from typing import Dict
 
 
 class MeasurementRecord(faust.Record):
     timestamp: str
     value: str
     name: str
-    labels: dict
+    labels: Dict[str, str]
 
 
 class ParsedRecord(faust.Record):
     timestamp: datetime
     value: float
     name: str
-    labels: dict
+    labels: Dict[str, str]
