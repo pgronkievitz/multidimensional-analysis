@@ -3,7 +3,7 @@ from etls.record import MeasurementRecord, ParsedRecord
 from datetime import datetime
 
 
-async def parse_measurement(measurement: MeasurementRecord):
+async def parse_measurement(measurement: MeasurementRecord) -> ParsedRecord:
 
     try:
         timestamp = datetime.strptime(measurement.timestamp, "%Y-%m-%dT%H:%M:%SZ")
@@ -20,7 +20,7 @@ async def parse_measurement(measurement: MeasurementRecord):
     return ParsedRecord(timestamp=timestamp, value=value, name=name, labels=labels)
 
 
-async def remove_nones(parsed: ParsedRecord):
+async def remove_nones(parsed: ParsedRecord) -> ParsedRecord:
     # TODO
     # cleaning nones
     #   imputation (e.g. average of neighbors)
