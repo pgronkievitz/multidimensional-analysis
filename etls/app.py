@@ -3,7 +3,9 @@ from data_parse_and_clean import parse_measurement
 
 from record import MeasurementRecord, ParsedRecord
 
-app = faust.App("wad", broker="kafka://100.111.43.19:9091", value_serializer="json")
+app = faust.App(
+    "wad_distributor", broker="kafka://100.111.43.19:9091", value_serializer="json"
+)
 
 metrics_topic = app.topic("metrics", value_type=MeasurementRecord)
 systemd_topic = app.topic("systemd", value_type=ParsedRecord)
