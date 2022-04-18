@@ -1,6 +1,6 @@
 import faust
 from datetime import datetime
-from typing import Dict, Union
+from typing import Dict
 
 
 class MeasurementRecord(faust.Record, serializer="json"):
@@ -15,7 +15,3 @@ class ParsedRecord(faust.Record, serializer="json"):
     value: float
     name: str
     labels: Dict[str, str]
-
-
-class TimeStamp(faust.Record, serializer="json"):
-    time: Union[datetime, str]
