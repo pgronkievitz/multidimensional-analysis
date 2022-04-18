@@ -1,13 +1,13 @@
-from etls.record import MeasurementRecord, ParsedRecord
+from record import MeasurementRecord, ParsedRecord
 from datetime import datetime
 
 
-async def parse_measurement(measurement: MeasurementRecord) -> ParsedRecord:
+def parse_measurement(measurement: MeasurementRecord) -> ParsedRecord:
 
     try:
         timestamp = datetime.strptime(measurement.timestamp, "%Y-%m-%dT%H:%M:%SZ")
     except ValueError:
-        timestamp = None
+        timestamp = datetime.fromtimestamp(0)
     try:
         value = float(measurement.value)
     except ValueError:
