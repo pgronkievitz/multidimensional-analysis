@@ -1,5 +1,7 @@
 networks:
-  mda: {}
+  mda:
+    external:
+    name: mda
 services:
   zookeeper:
     image: bitnami/zookeeper:3.7
@@ -16,12 +18,17 @@ services:
     image: bitnami/kafka
     ports:
       - 9092:9092
+      - 9091:9091
     volumes:
       - ./data/kafka:/bitnami
     environment:
       KAFKA_CFG_ZOOKEEPER_CONNECT: "zookeeper:2181"
       ALLOW_PLAINTEXT_LISTENER: "yes"
       KAFKA_CFG_AUTO_CREATE_TOPICS: ENABLE
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_CFG_LISTENERS: CLIENT://:9092,EXTERNAL://0.0.0.0:9091
+      KAFKA_CFG_ADVERTISED_LISTENERS: CLIENT://kafka:9092,EXTERNAL://100.111.43.19:9091
+      KAFKA_CFG_INTER_BROKER_LISTENER_NAME: CLIENT
     depends_on:
       - zookeeper
     networks:
