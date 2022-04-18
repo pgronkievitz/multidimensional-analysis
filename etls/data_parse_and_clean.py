@@ -17,11 +17,3 @@ def parse_measurement(measurement: MeasurementRecord) -> ParsedRecord:
     labels = measurement.labels
 
     return ParsedRecord(timestamp=timestamp, value=value, name=name, labels=labels)
-
-
-async def remove_nones(parsed: ParsedRecord) -> ParsedRecord:
-    # TODO
-    # cleaning nones
-    #   imputation (e.g. average of neighbors)
-    #   OR arbitraty values
-    return parsed

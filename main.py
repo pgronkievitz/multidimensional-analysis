@@ -14,12 +14,3 @@ async def data_parsing(measurements):
     async for measurement in measurements:
         parsed = await parse_measurement(measurement)
         await parsed_topic.send(value=parsed)
-
-
-@app.agent(parsed_topic)
-async def data_cleaning(parsed_measurements):
-    async for parsed in parsed_measurements:
-        cleaned = await remove_nones(parsed)
-        # TODO
-        # other cleaning operations
-        await processed_topic.send(value=cleaned)
