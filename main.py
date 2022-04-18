@@ -2,7 +2,7 @@ import faust
 from etls.record import MeasurementRecord, ParsedRecord
 from etls.data_parse_and_clean import parse_measurement, remove_nones
 
-app = faust.App("myapp", broker="kafka://localhost:9092")
+app = faust.App("myapp", broker="kafka://100.111.43.19:9091")
 
 raw_topic = app.topic("raw", value_type=MeasurementRecord)
 parsed_topic = app.topic("parsed",
