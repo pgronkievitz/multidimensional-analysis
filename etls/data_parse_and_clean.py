@@ -20,8 +20,7 @@ def parse_measurement(measurement: MeasurementRecord) -> ParsedRecord:
     return ParsedRecord(timestamp=timestamp, value=value, name=name, labels=labels)
 
 
-def flatten_record(record: ParsedRecord) -> faust.Record:
+def flat_dict_from_record(record: ParsedRecord) -> dict:
     dumped = record.asdict()
     dumped_labels = dumped.pop('labels')
-    new_dumped = {**dumped, **dumped_labels}
-    return faust.Record.from_data(new_dumped)
+    return {**dumped, **dumped_labels}
