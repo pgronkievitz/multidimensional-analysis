@@ -22,5 +22,5 @@ def parse_measurement(measurement: MeasurementRecord) -> ParsedRecord:
 
 def flat_dict_from_record(record: ParsedRecord) -> dict:
     dumped = record.asdict()
-    dumped_labels = dumped.pop('labels')
+    dumped_labels = dumped.pop("labels")
     return {**dumped, **dumped_labels}
