@@ -1,3 +1,4 @@
+import faust
 from record import MeasurementRecord, ParsedRecord
 from datetime import datetime
 
@@ -17,3 +18,10 @@ def parse_measurement(measurement: MeasurementRecord) -> ParsedRecord:
     labels = measurement.labels
 
     return ParsedRecord(timestamp=timestamp, value=value, name=name, labels=labels)
+
+
+def flatten_record(record: ParsedRecord) -> faust.Record:
+    dumped = record.asdict()
+    dumped_labels = dumped.pop('labels')
+    new_dumped = {**dumped, **dumped_labels}
+    return faust.Record.from_data(new_dumped)
