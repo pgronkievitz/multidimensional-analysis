@@ -1,7 +1,7 @@
 import faust
 from record import MeasurementRecord, ParsedRecord
 from datetime import datetime
-from typing import Dict, Any
+from typing import Dict, Union
 
 
 def parse_measurement(measurement: MeasurementRecord) -> ParsedRecord:
@@ -21,7 +21,8 @@ def parse_measurement(measurement: MeasurementRecord) -> ParsedRecord:
     return ParsedRecord(timestamp=timestamp, value=value, name=name, labels=labels)
 
 
-def flat_dict_from_record(record: ParsedRecord) -> Dict[str, Any]:
+def flat_dict_from_record(record: ParsedRecord) -> Dict[str, Union[str, int,
+                                                                   datetime]]:
     dumped = record.asdict()
     dumped_labels = dumped.pop("labels")
     return {**dumped, **dumped_labels}
