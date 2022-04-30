@@ -1,5 +1,5 @@
 import faust
-from data_parse_and_clean import parse_measurement
+from data_parse_and_clean import parse_measurement, flat_dict_from_record
 
 from record import MeasurementRecord, ParsedRecord
 
@@ -18,13 +18,14 @@ traefik_topic = app.topic("traefik", value_type=ParsedRecord)
 async def distribute(measurements):
     async for measurement in measurements:
         measure = parse_measurement(measurement=measurement)
-        if "systemd" in measure.name:
+        measure = flat_dict_from_record(measure)
+        if "systemd" in measure["name"]:
             await systemd_topic.send(value=measure)
-        elif "node" in measure.name:
+        elif "node" in measure["name"]:
             await node_topic.send(value=measure)
-        elif "traefik" in measure.name:
+        elif "traefik" in measure["name"]:
             await traefik_topic.send(value=measure)
-        elif "container" in measure.name or "nextcloud" in measure.name:
+        elif "container" in measure["name"] or "nextcloud" in measure["name"]:
             await service_topic.send(value=measure)
         else:
             pass
