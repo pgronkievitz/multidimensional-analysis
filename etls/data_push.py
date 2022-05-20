@@ -21,3 +21,21 @@ def create_table(conn: psycopg2.connection):
         conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
+
+def insert_measurement(conn: psycopg2.connection,
+                       record: ParsedRecord):
+    command = """
+    INSERT INTO measurements (date, time, name, value)
+    VALUES ('{date}', '{time}', {name}, {value});""".format(date=
+                                                                        record.timestamp.strftime("%m-%d-%y"),
+                                                            time=record.timestamp.strftime("%H:%M:%S"),
+                                                            name=record.name,
+                                                            value=record.value
+                                                            )
+    try:
+        cur = conn.cursor()
+        cur.execute(command)
+        cur.close()
+        conn.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
