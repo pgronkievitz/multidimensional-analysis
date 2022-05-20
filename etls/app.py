@@ -1,10 +1,18 @@
 import faust
+import psycopg2
 from data_parse_and_clean import parse_measurement, flat_dict_from_record
 
 from record import MeasurementRecord, ParsedRecord
 
 app = faust.App(
     "wad_distributor", broker="kafka://100.111.43.19:9091", value_serializer="json"
+)
+#TODO fill credentials
+conn = psycopg2.connect(
+    host = "host",
+    database = "database",
+    user = "user",
+    password = "password"
 )
 
 metrics_topic = app.topic("metrics", value_type=MeasurementRecord)
