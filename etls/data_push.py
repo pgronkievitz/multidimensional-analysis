@@ -3,7 +3,8 @@ from record import ParsedRecord
 from datetime import datetime
 import psycopg2
 
-def create_table(conn: psycopg2.connection):
+
+def create_table(conn):
     command = """
     CREATE TABLE IF NOT EXISTS measurements (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -22,8 +23,8 @@ def create_table(conn: psycopg2.connection):
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
 
-def insert_measurement(conn: psycopg2.connection,
-                       record: ParsedRecord):
+
+def insert_measurement(conn, record: ParsedRecord):
     command = """
     INSERT INTO measurements (date, time, name, value)
     VALUES ('{date}', '{time}', {name}, {value});""".format(date=
