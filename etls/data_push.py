@@ -15,7 +15,8 @@ def create_table(conn):
     value FLOAT NULL,
     CONSTRAINT "primary" PRIMARY KEY (id ASC),
     FAMILY "primary" (id, date, time, name, value)
-    );  """
+    );
+    """
     try:
         cur = conn.cursor()
         cur.execute(command)
