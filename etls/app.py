@@ -42,9 +42,11 @@ async def distribute(measurements):
         else:
             pass
 
+
 @app.agent(systemd_topic)
 async def systemd_push(measurements):
     async for measurement in measurements:
+        measurement = parse_measurement(measurement=measurement)
         insert_measurement(conn, measurement)
 
 
