@@ -2,6 +2,7 @@ import faust
 from record import ParsedRecord
 from datetime import datetime
 import psycopg2
+import sys
 
 
 def create_table(conn):
@@ -42,4 +43,4 @@ def insert_measurement(conn, record: ParsedRecord):
         cur.close()
         conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
+        sys.stderr.write(f"DB ERROR {str(error)}")
