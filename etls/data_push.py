@@ -27,15 +27,18 @@ def create_table(conn):
 def insert_measurement(conn, record: ParsedRecord):
     command = """
     INSERT INTO measurements (date, time, name, value)
-    VALUES ('{date}', '{time}', {name}, {value});""".format(date=
-                                                                        record.timestamp.strftime("%m-%d-%y"),
-                                                            time=record.timestamp.strftime("%H:%M:%S"),
-                                                            name=record.name,
-                                                            value=record.value
-                                                            )
+    VALUES (%s, %s, %s, %s);"""
     try:
         cur = conn.cursor()
-        cur.execute(command)
+        cur.execute(
+            command,
+            (
+                record.timestamp.strftime("%m-%d-%y"),
+                record.timestamp.strftime("%H:%M:%S"),
+                record.name,
+                record.value,
+            ),
+        )
         cur.close()
         conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
