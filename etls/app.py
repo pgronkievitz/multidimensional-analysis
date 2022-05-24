@@ -47,7 +47,7 @@ async def systemd_push(measurements):
     async for measurement in measurements:
         insert_measurement(conn, measurement)
 
-conn.close()
 
 if __name__ == "__main__":
     app.main()
+conn.close()
