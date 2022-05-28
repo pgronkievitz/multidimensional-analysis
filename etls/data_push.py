@@ -34,8 +34,6 @@ def insert_measurement(
     new_columns = list(
         filter(lambda x: x not in existing_columns["labels"], record.keys())
     )
-    print(type(existing_columns["labels"]))
-    print(existing_columns)
     existing_columns["labels"] += new_columns
     if len(new_columns) > 0:
         insert_column(conn, new_columns)

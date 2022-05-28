@@ -49,7 +49,6 @@ async def systemd_push(measurements):
     async for measurement in measurements:
         measurement = parse_measurement(measurement=measurement)
         measurement = flat_dict_from_record(measurement)
-        print(measurement)
         insert_measurement(conn, measurement, existing_columns=existing_labels)
 
 
