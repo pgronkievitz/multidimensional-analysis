@@ -59,9 +59,10 @@ def insert_column(conn, colnames: Iterable[str]) -> None:
     try:
         sys.stderr.write(f"Creating cursor")
         cur = conn.cursor()
-        args = ", ".join(cur.mogrify("ADD COLUMN %s IF NOT EXISTS", list(colnames)))
-        command = f"""ALTER TABLE IF EXISTS measurements {args};"""
-        cur.execute(command)
+        for i in colnames:
+            cur.execute(
+                f"ALTER TABLE IF EXISTS measurements ADD COLUMN IF NOT EXISTS {i} STRING;"
+            )
         sys.stderr.write(f"Closing cursor")
         cur.close()
         sys.stderr.write("Commit")
