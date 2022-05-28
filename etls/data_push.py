@@ -23,7 +23,7 @@ def create_table(conn):
         cur.close()
         conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
+        sys.stderr.write(f"{str(error)}")
 
 
 def insert_measurement(conn, record: ParsedRecord):
@@ -44,7 +44,9 @@ def insert_measurement(conn, record: ParsedRecord):
         cur.close()
         conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
-        sys.stderr.write(f"DB ERROR {str(error)}")
+        sys.stderr.write(f"DB ERROR (insert record) {str(error)}")
+
+
 def insert_column(conn, colnames: Iterable[str]) -> None:
     try:
         sys.stderr.write(f"Creating cursor")
