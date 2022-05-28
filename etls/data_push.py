@@ -45,3 +45,16 @@ def insert_measurement(conn, record: ParsedRecord):
         conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
         sys.stderr.write(f"DB ERROR {str(error)}")
+def insert_column(conn, colnames: Iterable[str]) -> None:
+    try:
+        sys.stderr.write(f"Creating cursor")
+        cur = conn.cursor()
+        args = ", ".join(cur.mogrify("ADD COLUMN %s IF NOT EXISTS", list(colnames)))
+        command = f"""ALTER TABLE IF EXISTS mda {args};"""
+        cur.execute(command)
+        sys.stderr.write(f"Closing cursor")
+        cur.close()
+        sys.stderr.write("Commit")
+        conn.commit()
+    except (Exception, psycopg2.DataError) as error:
+        sys.stderr.write(f"DB ERROR (insert_column) {str(error)}")
