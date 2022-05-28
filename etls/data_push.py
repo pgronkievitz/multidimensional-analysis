@@ -42,11 +42,7 @@ def insert_measurement(
         cur = conn.cursor()
         cur.execute(
             command,
-            (
-                record["timestamp"],
-                record["name"],
-                record["value"],
-            ),
+            list(record.values()),
         )
         cur.close()
         conn.commit()
