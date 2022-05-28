@@ -44,11 +44,13 @@ async def distribute(measurements):
             pass
 
 
-@app.agent(systemd_topic)
+@app.agent(metrics_topic)
 async def systemd_push(measurements):
     async for measurement in measurements:
         measurement = parse_measurement(measurement=measurement)
-        insert_measurement(conn, measurement)
+        measurement = flat_dict_from_record(measurement)
+        print(measurement)
+        insert_measurement(conn, measurement, existing_columns=existing_labels)
 
 
 if __name__ == "__main__":
