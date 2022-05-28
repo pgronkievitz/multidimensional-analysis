@@ -9,12 +9,11 @@ def create_table(conn):
     command = """
     CREATE TABLE IF NOT EXISTS measurements (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
-    date DATE NOT NULL,
-    time TIME NOT NULL,
+    timestamp TIMESTAMP NOT NULL,
     name STRING NULL,
     value FLOAT NULL,
-    CONSTRAINT "primary" PRIMARY KEY (id ASC),
-    FAMILY "primary" (id, date, time, name, value)
+    CONSTRAINT "primary" PRIMARY KEY (id),
+    FAMILY "primary" (id, timestamp, name, value)
     );
     """
     try:
