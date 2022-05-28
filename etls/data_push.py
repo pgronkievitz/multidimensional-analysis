@@ -20,9 +20,9 @@ def create_table(conn):
         cur = conn.cursor()
         cur.execute(command)
         cur.close()
-        conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
         sys.stderr.write(f"{str(error)}")
+    conn.commit()
 
 
 def insert_measurement(
@@ -45,9 +45,9 @@ def insert_measurement(
             list(record.values()),
         )
         cur.close()
-        conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
         sys.stderr.write(f"DB ERROR (insert record) {str(error)}")
+    conn.commit()
 
 
 def insert_column(conn, colnames: Iterable[str]) -> None:
@@ -61,3 +61,4 @@ def insert_column(conn, colnames: Iterable[str]) -> None:
         conn.commit()
     except (Exception, psycopg2.DataError) as error:
         sys.stderr.write(f"DB ERROR (insert_column) {str(error)}")
+    conn.commit()
