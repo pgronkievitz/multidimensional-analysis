@@ -6,8 +6,8 @@ from record import MeasurementRecord, ParsedRecord
 
 app = faust.App(
     "wad_distributor",
-    broker="kafka://100.111.43.19:9091",
-    value_serializer="json",  # TODO: don't hardcode IP
+    broker="kafka://100.111.43.19:9091",  # TODO: don't hardcode IP
+    value_serializer="json",
 )
 conn = psycopg2.connect(
     host="100.111.43.19",  # TODO: don't hardcode IP
