@@ -36,8 +36,9 @@ def insert_measurement(
     )
     print(type(existing_columns["labels"]))
     print(existing_columns)
-    insert_column(conn, new_columns)
     existing_columns["labels"] += new_columns
+    if len(new_columns) > 0:
+        insert_column(conn, new_columns)
 
     try:
         cur = conn.cursor()
