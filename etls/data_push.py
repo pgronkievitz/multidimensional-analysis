@@ -27,7 +27,7 @@ def create_table(conn):
 
 def insert_measurement(
     conn, record: Dict[str, Any], existing_columns: faust.types.tables.TableT
-):
+) -> None:
     command = f"""
     INSERT INTO measurements (timestamp, name, value)
     VALUES (%s, %s, %s);"""
