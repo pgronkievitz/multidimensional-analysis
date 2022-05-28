@@ -18,7 +18,7 @@ conn = psycopg2.connect(
 )
 
 
-existing_labels = app.SetTable("labels", partitions=1)
+existing_labels = app.Table("labels", partitions=1, default=list)
 
 metrics_topic = app.topic("metrics", value_type=MeasurementRecord)
 systemd_topic = app.topic("systemd", value_type=ParsedRecord)

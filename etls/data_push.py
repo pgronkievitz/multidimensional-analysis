@@ -31,13 +31,13 @@ def insert_measurement(
     command = f"""
     INSERT INTO measurements (timestamp, name, value)
     VALUES (%s, %s, %s);"""
-    new_columns = set(
+    new_columns = list(
         filter(lambda x: x not in existing_columns["labels"], record.keys())
     )
     print(type(existing_columns["labels"]))
-    existing_columns["labels"] |= new_columns
     print(existing_columns)
     insert_column(conn, new_columns)
+    existing_columns["labels"] += new_columns
 
     try:
         cur = conn.cursor()
