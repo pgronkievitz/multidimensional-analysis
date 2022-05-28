@@ -21,8 +21,11 @@ def parse_measurement(measurement: MeasurementRecord) -> ParsedRecord:
     return ParsedRecord(timestamp=timestamp, value=value, name=name, labels=labels)
 
 
-def flat_dict_from_record(record: ParsedRecord) -> Dict[str, Union[str, int,
-                                                                   datetime]]:
+def flat_dict_from_record(record: ParsedRecord) -> Dict[str, Union[str, int, datetime]]:
     dumped = record.asdict()
     dumped_labels = dumped.pop("labels")
+    try:
+        dumped_labels.pop("__name__")
+    except KeyError:
+        pass
     return {**dumped, **dumped_labels}
