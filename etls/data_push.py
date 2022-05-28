@@ -25,19 +25,28 @@ def create_table(conn):
         sys.stderr.write(f"{str(error)}")
 
 
-def insert_measurement(conn, record: ParsedRecord):
-    command = """
-    INSERT INTO measurements (date, time, name, value)
-    VALUES (%s, %s, %s, %s);"""
+def insert_measurement(
+    conn, record: Dict[str, Any], existing_columns: faust.types.tables.TableT
+):
+    command = f"""
+    INSERT INTO measurements (timestamp, name, value)
+    VALUES (%s, %s, %s);"""
+    new_columns = set(
+        filter(lambda x: x not in existing_columns["labels"], record.keys())
+    )
+    print(type(existing_columns["labels"]))
+    existing_columns["labels"] |= new_columns
+    print(existing_columns)
+    insert_column(conn, new_columns)
+
     try:
         cur = conn.cursor()
         cur.execute(
             command,
             (
-                record.timestamp.strftime("%m-%d-%y"),
-                record.timestamp.strftime("%H:%M:%S"),
-                record.name,
-                record.value,
+                record["timestamp"],
+                record["name"],
+                record["value"],
             ),
         )
         cur.close()
