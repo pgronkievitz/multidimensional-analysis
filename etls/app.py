@@ -16,7 +16,6 @@ conn = psycopg2.connect(
     port=26257,
 )
 
-create_table(conn)
 
 metrics_topic = app.topic("metrics", value_type=MeasurementRecord)
 systemd_topic = app.topic("systemd", value_type=ParsedRecord)
@@ -53,5 +52,6 @@ async def systemd_push(measurements):
 
 
 if __name__ == "__main__":
+    create_table(conn)
     app.main()
 conn.close()
