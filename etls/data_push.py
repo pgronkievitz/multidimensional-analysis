@@ -29,8 +29,8 @@ def insert_measurement(
     conn, record: Dict[str, Any], existing_columns: faust.types.tables.TableT
 ) -> None:
     command = f"""
-    INSERT INTO measurements (timestamp, name, value)
-    VALUES (%s, %s, %s);"""
+    INSERT INTO measurements ({', '.join(record.keys())})
+    VALUES ({'%s, ' * (len(record.keys()) - 1) + '%s'});"""
     new_columns = list(
         filter(lambda x: x not in existing_columns["labels"], record.keys())
     )
