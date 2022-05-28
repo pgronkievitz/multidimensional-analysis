@@ -1,4 +1,5 @@
 import faust
+import faust.tables.sets
 import psycopg2
 from data_parse_and_clean import parse_measurement, flat_dict_from_record
 from data_push import create_table, insert_measurement
@@ -17,14 +18,13 @@ conn = psycopg2.connect(
 )
 
 
+existing_labels = app.SetTable("labels", partitions=1)
+
 metrics_topic = app.topic("metrics", value_type=MeasurementRecord)
 systemd_topic = app.topic("systemd", value_type=ParsedRecord)
 node_topic = app.topic("node", value_type=ParsedRecord)
 service_topic = app.topic("service", value_type=ParsedRecord)
 traefik_topic = app.topic("traefik", value_type=ParsedRecord)
-
-# TODO: we'll deal with this later
-# labels_table = app.Table('labels_columns', key_type = str, value_type = list)
 
 
 @app.agent(metrics_topic)

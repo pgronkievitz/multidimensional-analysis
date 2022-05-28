@@ -1,8 +1,8 @@
+from typing import Any, Dict, Iterable
 import faust
-from record import ParsedRecord
-from datetime import datetime
 import psycopg2
 import sys
+import faust.types.tables
 
 
 def create_table(conn):
