@@ -52,6 +52,12 @@ async def systemd_push(measurements):
         insert_measurement(conn, measurement, existing_columns=existing_labels)
 
 
+@app.timer(interval=10.0)
+async def commiting():
+    print("commiting")
+    conn.commit()
+
+
 if __name__ == "__main__":
     create_table(conn)
     app.main()

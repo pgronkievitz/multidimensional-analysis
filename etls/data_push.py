@@ -22,7 +22,6 @@ def create_table(conn):
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
         sys.stderr.write(f"{str(error)}")
-    conn.commit()
 
 
 def insert_measurement(
@@ -47,18 +46,17 @@ def insert_measurement(
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
         sys.stderr.write(f"DB ERROR (insert record) {str(error)}")
-    conn.commit()
 
 
 def insert_column(conn, colnames: Iterable[str]) -> None:
     try:
+        conn.commit()
         cur = conn.cursor()
         for i in colnames:
             cur.execute(
                 f"ALTER TABLE IF EXISTS measurements ADD COLUMN IF NOT EXISTS {i} STRING;"
             )
         cur.close()
-        conn.commit()
     except (Exception, psycopg2.DataError) as error:
         sys.stderr.write(f"DB ERROR (insert_column) {str(error)}")
     conn.commit()
