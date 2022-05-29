@@ -28,10 +28,10 @@ def flat_dict_from_record(record: ParsedRecord) -> Dict[str, Union[str, int, dat
         dumped_labels.pop("__name__")
     except KeyError:
         pass
-    dup_labels = set(dumped.keys()).intersection(set(dumped_labels.keys()))
-    for i in dup_labels:
-        try:
-            dumped_labels[f"label_{i}"] = dumped_labels.pop(i)
-        except KeyError:
-            pass
+    dumped_labels = dict(
+        zip(
+            map(lambda x: "label_" + str(x), dumped_labels.keys()),
+            dumped_labels.values(),
+        )
+    )
     return {**dumped, **dumped_labels}
