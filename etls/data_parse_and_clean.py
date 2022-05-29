@@ -32,4 +32,8 @@ def flat_dict_from_record(record: ParsedRecord) -> Dict[str, Union[str, int, dat
         dumped_labels["custom_id"] = dumped_labels.pop("id")
     except KeyError:
         pass
+    try:
+        dumped_labels["service_name"] = dumped_labels.pop("name")
+    except KeyError:
+        pass
     return {**dumped, **dumped_labels}
