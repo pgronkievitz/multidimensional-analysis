@@ -403,6 +403,9 @@ otrzymanym rekordzie jest nowe pole, (za pomocą funkcji /insert_column/ zdefini
 oraz wysłanie kwerendy INSERT.
 
 *** Wysłanie danych do modeli w Pythonie
-
+Dane do przetwarzania są przesyłane do modeli w osobnych topicach, które pozwalają na stworzenie osobnych workerów przetwarzających informacje. W tym celu zostały stworzone osobne topici na Kafce, dodatkowy router wiadomości oraz workery nasłuchujące. W łatwy sposób można przesłać dane dalej i granularyzować je dowolnie.
 ** Analiza danych
-*** Machine Learning
+*** Przewidywanie temperatury urządzeń
+W celu krótkoterminowego przewidywania temperatury urządzeń użyto metryk bezpośrednio dotyczących samego urządzenia, tzn. zawierających prefiks =node=. Przewidywania prowadzone były metodą OLS (Ordinary Least Squares), która daje zadowalające wyniki.
+*** Przewidywanie użycia procesora
+W tym wypadku przewidujemy dane, które mają bardzo silny trend (nigdy nie spadają, zawsze są wzrostowe). Podobnie jak poprzednio użyta została metoda OLS, która pozwoliła na przewidzenie użytego czasu procesora w następnych kilku minutach (a co za tym idzie --- procenta użycia CPU).
