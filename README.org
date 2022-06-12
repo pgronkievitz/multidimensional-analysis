@@ -166,8 +166,163 @@ Gdzie =FOLDER= należy zastąpić odpowiednią nazwą.
 * Implementacja
 ** Generowanie danych
 ** ETL
+
+Zadaniem modułów Extract-Transform-Load był export danych do takiej struktury, by można było dokonywać
+swobodnej analizy na wielu wymiarach.
+
+Schemat modułu ETL przedstawia rysunek. Jak widać, składa się on z kilku części składowych, których działanie
+i konfigurację opiszemy poniżej.
+
+[[file:diagrams/etls-diagram.jpg]]
+
 *** Eksport danych z Prometheusa
+
+Pierwszym etapem było wyeksportowanie danych z Prometheusa do brokera Kafka. Do tego celu użyliśmy
+adaptera przygotowanego przez firmę Telefonica. Format serializacji ustawiliśmy na JSON.
+
 *** Transformacje danych w Pythonie
+
+Centralnym modułem naszego programu w Fauście jest plik app.py:
+
+#+begin_src python
+import faust
+import faust.tables.sets
+import psycopg2
+from data_parse_and_clean import parse_measurement, flat_dict_from_record
+from data_push import create_table, insert_measurement
+from record import MeasurementRecord, ParsedRecord
+
+app = faust.App(
+    "wad_distributor",
+    broker="kafka://100.111.43.19:9091",
+    value_serializer="json",
+)
+conn = psycopg2.connect(
+    host="100.111.43.19",
+    database="mda",
+    user="mda",
+    port=26257,
+)
+
+
+existing_labels = app.Table("labels", partitions=1, default=list)
+metrics_topic = app.topic("metrics", value_type=MeasurementRecord)
+
+
+@app.agent(metrics_topic)
+async def systemd_push(measurements):
+    async for measurement in measurements:
+        measurement = parse_measurement(measurement=measurement)
+        measurement = flat_dict_from_record(measurement)
+        insert_measurement(conn, measurement, existing_columns=existing_labels)
+
+
+@app.timer(interval=10.0)
+async def commiting():
+    print("commiting")
+    conn.commit()
+
+
+if __name__ == "__main__":
+    create_table(conn)
+    app.main()
+conn.close()
+
+#+end_src
+
+Najpierw, po zaimportowaniu odpowiednich modułów, tworzymy obiekty: aplikacji Fausta oraz połączenia z bazą danych
+psycopg2. Następnie tworzymy tabelę Fausta, w której będziemy przechowywać nazwy istniejących kolumn w bazie, oraz
+obiekt topicu metrics, na którym będą się pojawiać dane z Prometheusa wysłane przez adapter.
+
+Następnie tworzymy w aplikacji Fausta narzędzia do zarządzania daynmi. Tworzymy funkcję asynchroniczną
+systemd_push, którą za pomocą dekoratora zamieniamy w agenta na topiku metrics. W funkcji tworzymy
+asynchroniczną pętlę for. W pętli tej możemy zdefiniować działania, które chcemy wykonać na każdym
+obiekcie (rekordzie), który spłynie do nas z topica. Każdy rekord najpierw traktujemy funkcją parse_measurement,
+która służy do sparsowania rekordu Fausta do typów danych Pythona, dodatkowo uzupełniając niektóre braki danych
+(jej kod poniżej). Następnie sparsowany rekord traktujemy funkcją flat_dict_from_record. Jej użycie jest
+konieczne, ponieważ w surowych danych mamy zagnieżdżony obiekt typu dict, więc w takim formacie ciężko by było
+wysłać rekord do bazy. Następnie wysyłamy rekord do bazy funkcją insert_measurement (o tym w kolejnym podrozdziale).
+
+Poniżej kod pliku record.py:
+
+#+begin_src python
+
+import faust
+from datetime import datetime
+from typing import Dict, Optional
+
+
+class MeasurementRecord(faust.Record, serializer="json"):
+    timestamp: str
+    value: str
+    name: str
+    labels: Dict[str, str]
+
+
+class ParsedRecord(faust.Record, serializer="json"):
+    timestamp: datetime
+    value: float
+    name: str
+    labels: Optional[Dict[str, str]]
+
+
+#+end_src
+
+Jest to tylko plik z klasami reprezentującymi rekord, który otrzymujemy, oraz sparsowany przez nas
+rekord. Widzimy w nim pola, które otrzymujemy z Prometheusa: timestamp, value (wartość metryki),
+name (nazwa metryki), labels (dodatkowe pola).
+
+Kod pliku data_parse_and_clean.py:
+
+#+begin_src python
+
+import faust
+from record import MeasurementRecord, ParsedRecord
+from datetime import datetime
+from typing import Dict, Union
+
+
+def parse_measurement(measurement: MeasurementRecord) -> ParsedRecord:
+
+    try:
+        timestamp = datetime.strptime(measurement.timestamp, "%Y-%m-%dT%H:%M:%SZ")
+    except ValueError:
+        timestamp = datetime.fromtimestamp(0)
+    try:
+        value = float(measurement.value)
+    except ValueError:
+        value = None
+
+    name = measurement.name
+    labels = measurement.labels
+
+    return ParsedRecord(timestamp=timestamp, value=value, name=name, labels=labels)
+
+
+def flat_dict_from_record(record: ParsedRecord) -> Dict[str, Union[str, int, datetime]]:
+    dumped = record.asdict()
+    dumped_labels = dumped.pop("labels")
+    try:
+        dumped_labels.pop("__name__")
+    except KeyError:
+        pass
+    dumped_labels = dict(
+        zip(
+            map(lambda x: "label_" + str(x), dumped_labels.keys()),
+            dumped_labels.values(),
+        )
+    )
+    return {**dumped, **dumped_labels}
+
+
+#+end_src
+
+Pierwsza funkcja parse_measurement przyjmuje surowy rekord z Prometheusa, gdzie wszystkie
+dane zapisane są w formie ciągu znaków. Tworzy rekord z typami danych Pythona. Jeśli
+timestamp jest nieprawidłowy, wprowadzana jest domyślna wartość. Jeśli wartość jest
+nieprawidłowa, wstawiana jest wartość pusta. Druga funkcja flat_dict_from_record
+"spłaszcza" rekord - usuwa zagnieżdżony obiekt z rekordu, przenosząc pola z niego do rekordu.
+
 *** Ładowanie danych do CockroachDB
 ** Analiza danych
 *** Machine Learning
