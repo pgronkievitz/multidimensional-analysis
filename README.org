@@ -2,12 +2,12 @@
  #+author: Hubert Baran 164141, Patryk Gronkiewicz 164157
  #+email: 164141@stud.prz.edu, 164157@stud.prz.edu.pl
  #+language: pl
- #+latex_class: report
+ #+latex_class: article
 
 * Użyte oprogramowanie
-** ETL --- [[https://kafka.apache.org][Apache Kafka]][fn:kafka]
+** ETL --- [[https://kafka.apache.org][Apache Kafka]]
 
-   Apache Kafka to platforma open-source do rozproszonego przetwarzania danych w postaci strumieniowej.
+   Apache Kafka[fn:kafka] to platforma open-source do rozproszonego przetwarzania danych w postaci strumieniowej.
 
    Na początku była rozwijana przez LinkedIn, następnie otrzymała wsparcie od Apache Software Foundation.
    Napisana jest w językach Scala i Java.
@@ -30,9 +30,9 @@
 
 [fn:kafka][[https://kafka.apache.org]]
 [fn:adapter]https://github.com/Telefonica/prometheus-kafka-adapter
-** Data warehouse --- [[https://www.cockroachlabs.com/][CockroachDB]][fn:cockroach]
+** Data warehouse --- [[https://www.cockroachlabs.com/][CockroachDB]]
 
-CockroachDB to rozproszona baza danych, której core jest dostępny za darmo.
+CockroachDB[fn:cockroach] to rozproszona baza danych, której core jest dostępny za darmo.
 
 Wysokopoziomowo to relacyjna baza danych, wykorzystuje SQL.
 Niskopoziomowo wykorzystuje mechanizm typu klucz-wartość, o wysokim stopniu spójności.
@@ -46,9 +46,9 @@ tą bazą danych (i narzędziami opartymi o nią).
 W naszym projekcie baza danych CockroachDB służy jako hurtownia danych. Trafiają tam dane
 po preprocessingu (po przejściu przez różne ETL w Kafce).
 
-** Zarządzanie usługami --- [[https://ww.wdocker.com][Docker]][fn:docker]
+** Zarządzanie usługami --- [[https://ww.wdocker.com][Docker]]
 
-Docker to platforma Open Source umożliwiająca tworzenie kontenerów (containers)
+Docker[fn:docker] to platforma Open Source umożliwiająca tworzenie kontenerów (containers)
 i uruchamianie w nich aplikacji.
 
 Kontenery są formą wirtualizacji. Są to aplikacje, które izolują jakiś kod (program) wraz
@@ -77,9 +77,9 @@ W pliku określamy nazwę obrazu kontenera i parametry takie jak woluminy, porty
 możliwa będzie komunikacja.
 
 [fn:docker]https://www.docker.com
-** Tworzenie wykresów --- [[https://grafana.com/][Grafana]][fn:grafana]
+** Tworzenie wykresów --- [[https://grafana.com/][Grafana]]
 
-Grafana to system open source przeznaczony do monitorowania i analizy zbiorów danych
+Grafana[fn:grafana] to system open source przeznaczony do monitorowania i analizy zbiorów danych
 (zwykle dużych, poszerzających się w czasie, często pochodzących z wielu źródeł).
 Jest to aplikacja webowa (korzystamy z niej z użyciem przeglądarki internetowej).
 Umożliwia m. in.:
@@ -103,9 +103,9 @@ danych po transformacjach przygotowujących je do tych analiz. Dane te przechowu
 w bazie danych CockroachDB.
 
 [fn:grafana]https://grafana.com/
-** Źródło danych --- [[https://prometheus.io][Prometheus]][fn:prometheus]
+** Źródło danych --- [[https://prometheus.io][Prometheus]]
 
-Prometheus to open source'owy toolkit do monitoringu i alertowania. Przechowuje szeregi
+Prometheus[fn:prometheus] to open source'owy toolkit do monitoringu i alertowania. Przechowuje szeregi
 czasowe w modelu wielowymiarowym. Zawiera własny język zapytań PromQL.
 
 W naszym projekcie W Prometheuszu przechowujemy surowe dane zebrane w monitoringu serwera,
@@ -173,6 +173,8 @@ swobodnej analizy na wielu wymiarach.
 Schemat modułu ETL przedstawia rysunek. Jak widać, składa się on z kilku części składowych, których działanie
 i konfigurację opiszemy poniżej.
 
+#+caption: Schemat funkcjonowania projektu
+#+attr_latex: :float nil
 [[file:diagrams/etls-diagram.jpg]]
 
 *** Eksport danych z Prometheusa
@@ -328,8 +330,7 @@ nieprawidłowa, wstawiana jest wartość pusta. Druga funkcja /flat_dict_from_re
 Za ładowanie danych do bazy danych Cockroach odpowiedzialna jest biblioteka psycopg2
 oraz wykorzystująca ją funkcja /insert_measurement/, zdefiniowana w module data_push.py:
 
-#+begin_source python
-
+#+begin_src python
 from typing import Any, Dict, Iterable
 import faust
 import psycopg2
@@ -392,9 +393,7 @@ def insert_column(conn, colnames: Iterable[str]) -> None:
     except (Exception, psycopg2.DataError) as error:
         sys.stderr.write(f"DB ERROR (insert_column) {str(error)}")
     conn.commit()
-
-
-#end_source
+#+end_src
 
 Zanim wprowadzimy dane do bazy, musimy najpierw utworzyć tabelę. Służy do tego funkcja ~create_table~,
 gdzie mamy zdefiniowaną kwerendę SQL oraz jej wywołanie. Z kolei poszczególne rekordy wysyłany
