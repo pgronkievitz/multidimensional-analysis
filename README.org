@@ -237,11 +237,11 @@ obiekt topicu metrics, na którym będą się pojawiać dane z Prometheusa wysł
 Następnie tworzymy w aplikacji Fausta narzędzia do zarządzania daynmi. Tworzymy funkcję asynchroniczną
 systemd_push, którą za pomocą dekoratora zamieniamy w agenta na topiku metrics. W funkcji tworzymy
 asynchroniczną pętlę for. W pętli tej możemy zdefiniować działania, które chcemy wykonać na każdym
-obiekcie (rekordzie), który spłynie do nas z topica. Każdy rekord najpierw traktujemy funkcją parse_measurement,
+obiekcie (rekordzie), który spłynie do nas z topica. Każdy rekord najpierw traktujemy funkcją /parse_measurement/,
 która służy do sparsowania rekordu Fausta do typów danych Pythona, dodatkowo uzupełniając niektóre braki danych
-(jej kod poniżej). Następnie sparsowany rekord traktujemy funkcją flat_dict_from_record. Jej użycie jest
+(jej kod poniżej). Następnie sparsowany rekord traktujemy funkcją /flat_dict_from_record/. Jej użycie jest
 konieczne, ponieważ w surowych danych mamy zagnieżdżony obiekt typu dict, więc w takim formacie ciężko by było
-wysłać rekord do bazy. Następnie wysyłamy rekord do bazy funkcją insert_measurement (o tym w kolejnym podrozdziale).
+wysłać rekord do bazy. Następnie wysyłamy rekord do bazy funkcją /insert_measurement/ (o tym w kolejnym podrozdziale).
 
 Poniżej kod pliku record.py:
 
@@ -269,8 +269,8 @@ class ParsedRecord(faust.Record, serializer="json"):
 #+end_src
 
 Jest to tylko plik z klasami reprezentującymi rekord, który otrzymujemy, oraz sparsowany przez nas
-rekord. Widzimy w nim pola, które otrzymujemy z Prometheusa: timestamp, value (wartość metryki),
-name (nazwa metryki), labels (dodatkowe pola).
+rekord. Widzimy w nim pola, które otrzymujemy z Prometheusa: /timestamp/, /value/ (wartość metryki),
+/name/ (nazwa metryki), /labels/ (dodatkowe pola).
 
 Kod pliku data_parse_and_clean.py:
 
@@ -317,16 +317,16 @@ def flat_dict_from_record(record: ParsedRecord) -> Dict[str, Union[str, int, dat
 
 #+end_src
 
-Pierwsza funkcja parse_measurement przyjmuje surowy rekord z Prometheusa, gdzie wszystkie
+Pierwsza funkcja /parse_measurement/ przyjmuje surowy rekord z Prometheusa, gdzie wszystkie
 dane zapisane są w formie ciągu znaków. Tworzy rekord z typami danych Pythona. Jeśli
 timestamp jest nieprawidłowy, wprowadzana jest domyślna wartość. Jeśli wartość jest
-nieprawidłowa, wstawiana jest wartość pusta. Druga funkcja flat_dict_from_record
+nieprawidłowa, wstawiana jest wartość pusta. Druga funkcja /flat_dict_from_record/
 "spłaszcza" rekord - usuwa zagnieżdżony obiekt z rekordu, przenosząc pola z niego do rekordu.
 
 *** Ładowanie danych do CockroachDB
 
 Za ładowanie danych do bazy danych Cockroach odpowiedzialna jest biblioteka psycopg2
-oraz wykorzystująca ją funkcja insert_measurement, zdefiniowana w module data_push.py:
+oraz wykorzystująca ją funkcja /insert_measurement/, zdefiniowana w module data_push.py:
 
 #+begin_source python
 
@@ -396,10 +396,10 @@ def insert_column(conn, colnames: Iterable[str]) -> None:
 
 #end_source
 
-Zanim wprowadzimy dane do bazy, musimy najpierw utworzyć tabelę. Służy do tego funkcja create_table,
+Zanim wprowadzimy dane do bazy, musimy najpierw utworzyć tabelę. Służy do tego funkcja /create_table/,
 gdzie mamy zdefiniowaną kwerendę SQL oraz jej wywołanie. Z kolei poszczególne rekordy wysyłany
-do bazy za pomocą funkcji insert_measurement, która wykonuje dwa zadania: dodaje kolumnę, jeśli w
-otrzymanym rekordzie jest nowe pole, (za pomocą funkcji insert_column zdefiniowanej poniżej),
+do bazy za pomocą funkcji /insert_measurement/, która wykonuje dwa zadania: dodaje kolumnę, jeśli w
+otrzymanym rekordzie jest nowe pole, (za pomocą funkcji /insert_column/ zdefiniowanej poniżej),
 oraz wysłanie kwerendy INSERT.
 
 *** Wysłanie danych do modeli w Pythonie
