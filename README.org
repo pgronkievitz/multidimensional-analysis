@@ -434,7 +434,6 @@ Dashboard ten przedstawia podsumowania statystyk dotyczących pracy kontenerów.
 [[file:screenshots/3-container.JPG]]
 [[file:screenshots/4-container.JPG]]
 [[file:screenshots/5-container.JPG]]
-[[file:screenshots/6-container.JPG]]
 [[file:screenshots/7-container.JPG]]
 [[file:screenshots/8-container.JPG]]
 [[file:screenshots/9-container.JPG]]
