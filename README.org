@@ -410,7 +410,7 @@ na zapisywanie dashboardów i organizowanie ich w katalogi.
 
 Wartością metryki jest wartość kolumny /value/, kolumna /name/ zawiera nazwę metryki. Pole /timestamp/ zawiera
 znacznik czasowy próbki. Oprócz tego różne próbki mają różne dodatkowe pola (pochodzące z obiektu /labels/),
-zawierające dodatkowe atrybuty. W niemal każdej wizualizacji dokonujemy *agregacji po czasie* - zwykle 1-minutowej
+zawierające dodatkowe atrybuty. W części wizualizacji dokonujemy *agregacji po czasie* - zwykle 1-minutowej
 bądź 5 - minutowej. Funkcja agregacji jest różna - suma, średnia bądź zliczenie, w zależności od kontekstu.
 
 Poniżej listujemy nazwy dashboardów i przedstawiamy
