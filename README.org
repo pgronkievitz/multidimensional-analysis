@@ -404,6 +404,63 @@ oraz wysłanie kwerendy INSERT.
 *** Wysłanie danych do modeli w Pythonie
 Dane do przetwarzania są przesyłane do modeli w osobnych topicach, które pozwalają na stworzenie osobnych workerów przetwarzających informacje. W tym celu zostały stworzone osobne topici na Kafce, dodatkowy router wiadomości oraz workery nasłuchujące. W łatwy sposób można przesłać dane dalej i granularyzować je dowolnie.
 ** Analiza danych
+*** Wizualizacje w Grafanie
+W Grafanie przygotowaliśmy kilka dashboardów, które są zbiorami wizualizacji danych, które zbieramy. Grafana pozwala
+na zapisywanie dashboardów i organizowanie ich w katalogi.
+
+Wartością metryki jest wartość kolumny /value/, kolumna /name/ zawiera nazwę metryki. Pole /timestamp/ zawiera
+znacznik czasowy próbki. Oprócz tego różne próbki mają różne dodatkowe pola (pochodzące z obiektu /labels/),
+zawierające dodatkowe atrybuty. W niemal każdej wizualizacji dokonujemy *agregacji po czasie* - zwykle 1-minutowej
+bądź 5 - minutowej. Funkcja agregacji jest różna - suma, średnia bądź zliczenie, w zależności od kontekstu.
+
+Poniżej listujemy nazwy dashboardów i przedstawiamy
+należące do nich wizualizacje.
+
++ /Machine/
+Na tym dashboardzie prezentujemy kilka ogólnych informacji na temat monitorowanej maszyny, w sposób tekstowy i wizualny.
+[[file:screenshots/1-machine.JPG]]
+Widzimy, że po prawej stronie u góry możemy dostosować okno czasowe, które chcemy oglądać, dla całego dashboardu.
+Na tym dashboardzie mamy dwa panele, gdzie panel po lewej stronie zawiera tekstową prezentację danych, a panel
+po prawej stronie zawiera wykres szeregu czasowego. Panel tekstowy przedstawia podstawowe parametry maszyny,
+które udało się uzyskać z danych: liczba rdzeni CPU, liczba rdzeni fizycznych CPU, czy liczba bajtów pamięci.
+Po prawej stronie mamy wykres zużycia pamięci przez procesy, w rozbiciu na /resident memory/ (faktyczną fizyczną
+porcję pamięci w użyciu) oraz /virtual memory/ (porcję pamięci, którą widzą procesy). Jest to liczba bajtów zagregowana
+po czasie (kubełki minutowe). Widzimy, że zużycie pamięci wirtualnej jest znacznie wyższe, czego
+należało się spodziewać.
+
++ /Container/
+Dashboard ten przedstawia podsumowania statystyk dotyczących pracy kontenerów.
+[[file:screenshots/2-container-1.JPG]]
+[[file:screenshots/3-container.JPG]]
+[[file:screenshots/4-container.JPG]]
+[[file:screenshots/5-container.JPG]]
+[[file:screenshots/6-container.JPG]]
+[[file:screenshots/7-container.JPG]]
+[[file:screenshots/8-container.JPG]]
+[[file:screenshots/9-container.JPG]]
+Na początku ogólne informacje, jak czas startu czy zużycie procesora. Następnie informacje (niezbyt ciekawe)
+na temat systemu plików kontenera. Następnie wizualizacje zużycia pamięci (widzimy na przykład na panelu /Memory failures/,
+że najwięcej problemów związanych z pamięcia było w okresie 15:57-16:04 - wcale nie w okresie, gdzie zużycie
+pamięci było najwyższe, co pokazuje panel /Memory usage/). Na końcu mamy jeszcze garść informacji dotyczących
+sieci kontenerowej. Widzimy znaczny wzrost otrzymanych pakietów pod koniec działania systemu.
+
++ /Traefik - reverse proxy/
+Tutaj przygotowaliśmy wizualizacje danych dotyczących działania reverse proxy.
+[[file:screenshots/10-traefik.JPG]]
+[[file:screenshots/11-traefik.JPG]]
+[[file:screenshots/12-traefik.JPG]]
+Możemy zauważyć, że ostatnia próbka, która zawierała informację na ten temat, mówiła o 1 otwartym połączeniu /entrypoint/
+oraz braku otwartych połączeń /service/. Następnie wykresy metryk /Request duration/ - /sum/ oraz /count/ (tutaj
+nie agregowaliśmy danych, wyświetliliśmy je w czystej postaci.) Możemy zobaczyć całkowite liczby zapytań.
+
++ /Miscellaneous//
+Na tym dashboardzie dokonaliśmy kilku podsumowań dotyczących dodatkowych atrybutów, jakie system przydzielał
+niektórym próbkom.
+[[file:screenshots/13-miscellaneous.JPG]]
+Tutaj jedyną możliwą agregacją było zliczanie /COUNT/, ponieważ wartości /value/ mogły dotyczyć różnych metryk.
+Zależało nam jedynie na zliczeniu i porównaniu ilości rekordów, które miały dane wartości danego atrybutu.
+Interpretacja tych wizualizacji nie jest łatwa.
+
 *** Przewidywanie temperatury urządzeń
 W celu krótkoterminowego przewidywania temperatury urządzeń użyto metryk bezpośrednio dotyczących samego urządzenia, tzn. zawierających prefiks =node=. Przewidywania prowadzone były metodą OLS (Ordinary Least Squares), która daje zadowalające wyniki.
 *** Przewidywanie użycia procesora
