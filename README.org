@@ -3,6 +3,7 @@
  #+email: 164141@stud.prz.edu, 164157@stud.prz.edu.pl
  #+language: pl
  #+latex_class: article
+ #+options: tags:nil
 
 * Użyte oprogramowanie
 ** ETL --- [[https://kafka.apache.org][Apache Kafka]]
@@ -487,7 +488,25 @@ niektórym próbkom.
 Tutaj jedyną możliwą agregacją było zliczanie /COUNT/, ponieważ wartości /value/ mogły dotyczyć różnych metryk.
 Zależało nam jedynie na zliczeniu i porównaniu ilości rekordów, które miały dane wartości danego atrybutu.
 Interpretacja tych wizualizacji nie jest łatwa.
+*** Alerty :ATTACH:
+:PROPERTIES:
+:ID:       826b07b8-c8ab-490e-96eb-536e620dd514
+:END:
+Granafa posiada możliwość wysyłania alertów, jeśli dana metryka przekroczy odpowiednią wartość przez odpowiednio długi czas. Nie wysyłamy powiadomienia, jeśli wartość jest przekroczona przez np. 1 min, natomiast przy dłuższym przekroczeniu takie powiadomienie jest wysyłane.
+Dostępne jest wiele platform, które mogą posłużyć za kanał z alertami, np. mail, Telegram czy Slack.
 
+1. Ustawiamy nazwę, typ oraz folder alertu
+   #+attr_latex: :float nil
+  [[file:screenshots/alert1.png]]
+2. Ustawiamy query na podstawie którego chcemy alertować
+   #+attr_latex: :float nil
+  [[file:screenshots/alert2.png]]
+3. Ustawiamy warunki przy jakich wysyłamy alert
+   #+attr_latex: :float nil
+  [[file:screenshots/alert3.png]]
+4. Opisujemy treść alertu
+   #+attr_latex: :float nil
+  [[file:screenshots/alert4.png]]
 *** Przewidywanie temperatury urządzeń
 W celu krótkoterminowego przewidywania temperatury urządzeń użyto metryk bezpośrednio dotyczących samego urządzenia, tzn. zawierających prefiks =node=. Przewidywania prowadzone były metodą OLS (Ordinary Least Squares), która daje zadowalające wyniki.
 *** Przewidywanie użycia procesora
